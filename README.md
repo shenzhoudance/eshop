@@ -18,6 +18,19 @@
 
 然后当我们的人生逐渐的走向了尽头之后，坦然的接受死亡的到来；
 
+# 电子商务的知识体系的逻辑
+1、构建一个产品（Product）的数据库；
+2、搭建一个购物车（Cart）的查看体系；
+3、将购物车的价格数据（Pay）传递给支付系统，完成支付；
+
+有型的商品需要填写购物地址；
+
+无形的商品直接在已购栏目里面查看，具备了查看权限；
+
+已购的商品可以传递给家人（4+4+2）使用；
+
+![超级空间1.gif](https://upload-images.jianshu.io/upload_images/7680238-3add0809421eefe9.gif?imageMogr2/auto-orient/strip)
+
 ```
 Last login: Sun Oct  7 08:55:44 on console
  xiaowei@xiaoweideMacBook-Pro ⮀ ~ ⮀ ⭠ master± ⮀ cd newspace
@@ -310,4 +323,115 @@ To https://github.com/shenzhoudance/eshop.git
 Branch master set up to track remote branch master from origin.
  xiaowei@xiaoweideMacBook-Pro ⮀ ~/newspace/eshop ⮀ ⭠ master ⮀ atom .
  xiaowei@xiaoweideMacBook-Pro ⮀ ~/newspace/eshop ⮀ ⭠ master ⮀
+```
+git checkout -b gems
+```
+gem 'bulma-rails', '~> 0.6.1'
+gem 'simple_form', '~> 3.5'
+gem 'devise', '~> 4.4'
+gem 'gravatar_image_tag', '~> 1.2'
+gem 'carrierwave'
+gem 'mini_magick'
+
+https://rubygems.org/
+https://github.com/plataformatec/simple_form
+https://github.com/plataformatec/devise
+https://github.com/carrierwaveuploader/carrierwave
+https://github.com/minimagick/minimagick
+rails generate simple_form:install
+
+rails generate devise:install
+config/environments/development.rb:
+config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+rails g devise:views
+rails generate devise User
+rake db:migrate
+rails g controller store index
+
+app/assets/stylesheets/application.scss
+```
+@import "bulma";
+
+.navbar-brand .title {
+	color: white;
+}
+
+.notification:not(:last-child) {
+	margin-bottom: 0;
+}
+
+```
+
+app/views/layouts/application.html.erb
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>eshop</title>
+    <%= csrf_meta_tags %>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= stylesheet_link_tag 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+
+  <body class="<%= yield (:body_class) %>">
+    <% if flash[:notice] %>
+      <div class="notification is-success global-notification">
+        <p class="notice"><%= notice %></p>
+      </div>
+    <% end %>
+    <% if flash[:alert] %>
+    <div class="notification is-danger global-notification">
+      <p class="alert"><%= alert %></p>
+    </div>
+    <% end %>
+     <nav class="navbar is-info" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <%= link_to root_path, class:"navbar-item" do %>
+          <h1 class="title is-5">超级空间</h1>
+        <% end  %>
+      <div class="navbar-burger burger" data-target="navbar">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+      <div id="navbar" class="navbar-menu">
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="field is-grouped">
+
+            <% if user_signed_in? %>
+              <div class="navbar-item has-dropdown is-hoverable">
+                  <%= link_to "退出", destroy_user_session_path, method: :delete, class: "button is-info" %>
+                </div>
+              </div>
+            <% else %>
+
+            <%= link_to "登录", new_user_session_path, class: "button is-info" %>
+            <%= link_to "注册", new_user_registration_path, class: "button is-info" %>
+
+            <% end %>
+
+            </div>
+          </div>
+        </div>
+    </div>
+  </nav>
+
+  <%= yield(:header) %>
+
+  <div class="container">
+
+    <%= yield %>
+
+  </div>
+
+  </body>
+</html>
+
+
 ```
